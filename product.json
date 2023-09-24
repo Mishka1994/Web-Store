@@ -1,0 +1,52 @@
+[
+  {
+    "model": "catalog.Product",
+    "pk": 1,
+    "fields": {
+      "name": "Автомат",
+      "description": "Обладает световым и звуковым эффектом. Работает от трех элементов питания типа АА",
+      "category_product": 1,
+      "price": 200.0
+    }
+  },
+  {
+    "model": "catalog.Product",
+    "pk": 2,
+    "fields": {
+      "name": "Машина на р/у",
+      "description": "Игрушка подходит для игры на улице в сухую погоду. В комплекте аккумулятор для машины и зарядное устройство.",
+      "category_product": 1,
+      "price": 150.0
+    }
+  },
+  {
+    "model": "catalog.Product",
+    "pk": 3,
+    "fields": {
+      "name": "Кукла Barby Extra",
+      "description": "Высота куклы 30см, в комплекте: аксессуары, домашний питомец(1 шт), одежда",
+      "category_product": 2,
+      "price": 250.0
+    }
+  },
+  {
+    "model": "catalog.Product",
+    "pk": 4,
+    "fields": {
+      "name": "Дом для кукол",
+      "description": "Размеры в собранном виде(Д*Ш*В): 700*350*850 мм, в комплекте: мебель для гостиной, в дома есть лифт.",
+      "category_product": 2,
+      "price": 600.0
+    }
+  },
+  {
+    "model": "catalog.Product",
+    "pk": 5,
+    "fields": {
+      "name": "НПИ'Anno 1800'",
+      "description": "Рекомендуемый возраст: 14+, Игроков: от 2 до 4, Время игры: ~120 мин",
+      "category_product": 3,
+      "price": 400.0
+    }
+  }
+]
