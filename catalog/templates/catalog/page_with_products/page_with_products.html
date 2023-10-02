@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+{% load my_tage %}
+
+{% block content %}
+<div class="container text-center">
+    <h1 class="display-4">{{ title }}</h1>
+    <div class="row g-2">
+        {% for item in object_list %}
+        <div class="col-4">
+            <div class="card p-3" style="width: 18rem;">
+                <img src="{{ item.image|product_media }}" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title">{{ item.name}}</h5>
+                    <p class="card-text">{{ item.description|truncatechars:30 }}</p>
+                    <h3 class="card-text">{{ item.price }} руб</h3>
+                    <a href="#" class="btn btn-primary">В корзину</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
