@@ -1,0 +1,17 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+
+<div class="card" style="width: 25rem;">
+    <div class="card-body">
+        <h5 class="card-title">{{ object.title }}</h5>
+        <h6 class="card-subtitle mb-2 text-body-secondary"> Slug: {{ object.slug }}</h6>
+        <p class="card-text">{{ object.content }}</p>
+
+        <a href="{% url 'catalog:list_blogpost' %}" class="btn btn-primary">List of posts</a>
+        <a href="{% url 'catalog:index' %}" class="btn btn-primary">Main page</a>
+    </div>
+    Views: {{ object.number_of_views }}
+</div>
+
+{% endblock %}
