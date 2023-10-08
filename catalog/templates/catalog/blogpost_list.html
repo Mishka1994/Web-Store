@@ -1,0 +1,28 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+
+<h1 class="display-4">{{ title }}</h1>
+<div class="row g-2">
+    {% for item in object_list %}
+    <div class="col-4">
+        <div class="card p-3" style="...">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <a href="{% url 'catalog:view_blogpost' item.id %}" class="btn btn-outline-primary" >Read post</a>
+                <a href="{% url 'catalog:update_blogpost' item.id %}" class="btn btn-outline-primary">Update post</a>
+                <a href="{% url 'catalog:delete_blogpost' item.id %} " class="btn btn-outline-primary">Delete post</a>
+            </div>
+        </div>
+        <p>Post status:
+        {% if item.is_published %}
+            Public
+        {% else %}
+            Not public
+        {% endif %}
+        </p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
