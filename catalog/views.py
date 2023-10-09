@@ -1,13 +1,22 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
 from catalog.models import Product, BlogPost
 
 
 def base(request):
     return render(request, 'base.html')
+
+
+class IndexTemplateView(TemplateView):
+    template_name = 'catalog/index.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Main'
+        return context
 
 
 def index(request):
@@ -17,16 +26,16 @@ def index(request):
     return render(request, 'catalog/index.html', context)
 
 
-class CatalogListView(ListView):
+class ProductListView(ListView):
     model = Product
-    template_name = 'catalog/page_with_products/page_with_products.html'
 
 
-def contacts(request):
-    context = {
-        'title': 'Contacts'
-    }
-    return render(request, 'catalog/contacts/contacts.html', context)
+class ProductDetailView(DetailView):
+    model = Product
+
+
+class ContactsTemplateView(TemplateView):
+    template_name = 'catalog/contacts.html'
 
 
 class BlogPostCreateView(CreateView):
