@@ -1,0 +1,15 @@
+{% extends 'catalog/base.html' %}
+{% load my_tage %}
+
+{% block content %}
+
+<div class="card text-center" style="width: 18rem;">
+  <img src="{{ object.image|product_media }}" class="card-img-top">
+  <div class="card-body">
+    <h5 class="card-title">{{ object.name }}</h5>
+    <p class="card-text">{{ object.description|truncatechars:200 }}</p>
+    <a href="{% url 'catalog:list_products' %}" class="btn btn-primary">К списку продуктов</a>
+  </div>
+</div>
+
+{% endblock %}
