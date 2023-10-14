@@ -1,6 +1,5 @@
 from django.db import models
 
-
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -20,7 +19,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name='название')
-    description = models.TextField(verbose_name='описание')
+    description = models.TextField(verbose_name='описание', **NULLABLE)
     image = models.ImageField(upload_to='product_preview/', verbose_name='превью изображение', **NULLABLE)
     category_product = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='категория')
     price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='цена')
@@ -28,7 +27,7 @@ class Product(models.Model):
     last_modified_date = models.DateField(auto_now=True, null=True)
 
     def __str__(self):
-        return f'{self.name} {self.category_product} {self.price}'
+        return f'{self.name} {self.description}, {self.price}'
 
     class Meta:
         verbose_name = 'продукт'
@@ -50,3 +49,17 @@ class BlogPost(models.Model):
     class Meta:
         verbose_name = 'пост'
         verbose_name_plural = 'посты'
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='продукт')
+    version_number = models.CharField(max_length=50, verbose_name='версия продукта')
+    name_version = models.CharField(max_length=100, verbose_name='название версии')
+    current_version_indicator = models.BooleanField(default=True, verbose_name='индикатор текущей версии')
+
+    def __str__(self):
+        return f'{self.name_version} ({self.version_number})'
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'

@@ -4,16 +4,27 @@
 {% block content %}
 <div class="container text-center">
     <h1 class="display-4">{{ title }}</h1>
-    <div class="row g-2">
+    <div class="row">
         {% for item in object_list %}
         <div class="col-4">
-            <div class="card p-3" style="width: 18rem;">
+            <div class="card" style="width: 18rem;">
                 <img src="{{ item.image|product_media }}" class="card-img-top">
-                <div class="card-body">
+                <div class="card_header">
                     <h5 class="card-title">{{ item.name}}</h5>
+                </div>
+                <div class="card-body">
                     <p class="card-text">{{ item.description|truncatechars:30 }}</p>
                     <h3 class="card-text">{{ item.price }} руб</h3>
+                    {% if item.last_version_name == None %}
+                    {% else %}
+                    <h4 class="card-text">Версия: {{ item.last_version_number }}</h4>
+                    <h4 class="card-text">{{ item.last_version_name }}</h4>
+                    {% endif %}
+                </div>
+                <div class="card-footer">
                     <a href="{% url 'catalog:view_product' item.pk %}" class="btn btn-primary">Смотреть товар</a>
+                    <a href="{% url 'catalog:update_product' item.pk %}" class="btn btn-success">Изменить товар</a>
+                    <a href="{% url 'catalog:delete_product' item.pk %}" class="btn btn-danger">Удалить товар</a>
                 </div>
             </div>
         </div>
