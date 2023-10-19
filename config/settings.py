@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'catalog',
+    'users',
+
 ]
 
 MIDDLEWARE = [
@@ -100,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
+# https://docs.djangoproject.com/en/4.2/topics/i18n/f
 
 LANGUAGE_CODE = 'ru-ru'
 
@@ -126,3 +128,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'samofalovmaikl@yandex.ru'
+EMAIL_HOST_PASSWORD = 'yyjhotmduyolxrco'
+EMAIL_USE_SSL = True
+#SERVER_EMAIL = 'samofalovmaikl@yandex.ru'
+#DEFAULT_FROM_EMAIL = 'samofalovmaikl@yandex.ru'
