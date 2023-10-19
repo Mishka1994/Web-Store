@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">Мой профиль</div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success">Сохранить</button>
+                </form>
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-danger" href="{% url 'users:newpassword' %}">Сгенерировать пароль</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

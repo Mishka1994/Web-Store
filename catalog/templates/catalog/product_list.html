@@ -15,10 +15,12 @@
                 <div class="card-body">
                     <p class="card-text">{{ item.description|truncatechars:30 }}</p>
                     <h3 class="card-text">{{ item.price }} руб</h3>
+                    <h5 class="card-text">{{ item.creator }}</h5>
                     {% if item.last_version_name == None %}
                     {% else %}
                     <h4 class="card-text">Версия: {{ item.last_version_number }}</h4>
                     <h4 class="card-text">{{ item.last_version_name }}</h4>
+
                     {% endif %}
                 </div>
                 <div class="card-footer">
