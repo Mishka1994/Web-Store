@@ -139,5 +139,4 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = 'samofalovmaikl@yandex.ru'
 EMAIL_HOST_PASSWORD = 'yyjhotmduyolxrco'
 EMAIL_USE_SSL = True
-#SERVER_EMAIL = 'samofalovmaikl@yandex.ru'
-#DEFAULT_FROM_EMAIL = 'samofalovmaikl@yandex.ru'
+LOGIN_URL = '/users/login/'

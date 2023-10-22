@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import random
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.core.mail import send_mail
@@ -48,6 +50,7 @@ class UserUpdateView(UpdateView):
         return self.request.user
 
 
+@login_required(login_url='users/')
 def newpassword(request):
     new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
     send_mail(
