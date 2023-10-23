@@ -26,9 +26,9 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=5, decimal_places=2, verbose_name='цена')
     date_of_creation = models.DateField(auto_now_add=True, null=True)
     last_modified_date = models.DateField(auto_now=True, null=True)
-
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE,
                                 verbose_name='Создатель продукта')
+    status_of_product = models.BooleanField(default=False, verbose_name='опубликовано')
 
     def __str__(self):
         return f'{self.name} {self.description}, {self.price}'
@@ -36,6 +36,13 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+
+        permissions = [
+            (
+                'set_status_of_product',
+                'Can status product'
+            )
+        ]
 
 
 class BlogPost(models.Model):

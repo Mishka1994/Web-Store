@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -34,9 +35,10 @@ class CategoryCreateView(CreateView):
     success_url = reverse_lazy('catalog:list_product')
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog.add_product'
     success_url = reverse_lazy('catalog:list_product')
 
     def form_valid(self, form):
@@ -46,9 +48,11 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog.change_product'
+
     success_url = reverse_lazy('catalog:list_product')
 
     def get_context_data(self, **kwargs):
@@ -89,21 +93,28 @@ class ProductListView(ListView):
 
         return context_data
 
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset().filter(
+            id=self.kwargs.get('pk'),
+            creator_id=self.request.user
+        )
 
-class ProductDetailView(DetailView):
+
+class ProductDetailView(PermissionRequiredMixin, DetailView):
     model = Product
+    permission_required = 'catalog.view_product'
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:list_product')
 
 
-class ContactsTemplateView(TemplateView):
+class ContactsTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'catalog/contacts.html'
 
 
-class BlogPostCreateView(CreateView):
+class BlogPostCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
     form_class = BlogPostForm
     success_url = reverse_lazy('catalog:list_blogpost')
@@ -117,7 +128,7 @@ class BlogPostCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogPostDetailView(DetailView):
+class BlogPostDetailView(LoginRequiredMixin, DetailView):
     model = BlogPost
 
     def get_object(self, queryset=None):
@@ -127,7 +138,7 @@ class BlogPostDetailView(DetailView):
         return self.object
 
 
-class BlogPostListView(ListView):
+class BlogPostListView(LoginRequiredMixin, ListView):
     model = BlogPost
 
     def get_queryset(self, *args, **kwargs):
@@ -137,9 +148,10 @@ class BlogPostListView(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        return context
 
 
-class BlogPostUpdateView(UpdateView):
+class BlogPostUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogPost
     form_class = BlogPostForm
 
@@ -155,25 +167,25 @@ class BlogPostUpdateView(UpdateView):
         return reverse('catalog:view_blogpost', args=[self.kwargs.get('pk')])
 
 
-class BlogPostDeleteView(DeleteView):
+class BlogPostDeleteView(LoginRequiredMixin, DeleteView):
     model = BlogPost
     success_url = reverse_lazy('catalog:list_blogpost')
 
 
-class VersionCreateView(CreateView):
+class VersionCreateView(LoginRequiredMixin, CreateView):
     model = Version
     form_class = VersionForm
     success_url = reverse_lazy('catalog:list_version')
 
 
-class VersionListView(ListView):
+class VersionListView(LoginRequiredMixin, ListView):
     model = Version
 
 
-class VersionDetailView(DetailView):
+class VersionDetailView(LoginRequiredMixin, DetailView):
     model = Version
 
 
-class VersionUpdateView(UpdateView):
+class VersionUpdateView(LoginRequiredMixin, UpdateView):
     model = Version
     form_class = VersionForm
