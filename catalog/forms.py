@@ -20,10 +20,10 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ('name', 'description', 'category_product', 'price', 'status_of_product',)
 
-#    def __init__(self, *args, **kwargs):
-#        super().__init__(*args, **kwargs)
-#        for field_name, field in self.fields.items():
-#            field.widget.attrs['class'] = 'form-control'
+    #    def __init__(self, *args, **kwargs):
+    #        super().__init__(*args, **kwargs)
+    #        for field_name, field in self.fields.items():
+    #            field.widget.attrs['class'] = 'form-control'
 
     def clean_name(self):
         cleaned_data = self.cleaned_data.get('name')
@@ -42,6 +42,12 @@ class ProductForm(forms.ModelForm):
                 raise forms.ValidationError(f'Описание содержит некорректное слово: {word}')
 
         return cleaned_data
+
+
+class ProductFormManagers(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('description', 'category_product', 'status_of_product')
 
 
 class CategoryForm(forms.ModelForm):

@@ -25,9 +25,9 @@
                 </div>
                 <div class="card-footer">
                     <a href="{% url 'catalog:view_product' item.pk %}" class="btn btn-primary">Смотреть товар</a>
-                    {% if perms.catalog.change_product %}
-                    <a href="{% url 'catalog:update_product' item.pk %}" class="btn btn-success">Изменить товар</a>
-                    {% endif %}
+                        {% if perms.catalog.change_product %}
+                            <a href="{% url 'catalog:update_product' item.pk %}" class="btn btn-success">Изменить товар</a>
+                        {% endif %}
                     {% if perms.catalog.delete_product %}
                     <a href="{% url 'catalog:delete_product' item.pk %}" class="btn btn-danger">Удалить товар</a>
                     {% endif %}

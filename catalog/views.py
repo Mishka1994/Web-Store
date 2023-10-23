@@ -1,11 +1,11 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin, UserPassesTestMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from pytils.translit import slugify
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView, TemplateView
 
-from catalog.forms import ProductForm, CategoryForm, VersionForm, BlogPostForm
+from catalog.forms import ProductForm, CategoryForm, VersionForm, BlogPostForm, ProductFormManagers
 from catalog.models import Product, BlogPost, Category, Version
 
 
@@ -48,7 +48,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(PermissionRequiredMixin, UpdateView):
+class ProductUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
     permission_required = 'catalog.change_product'
@@ -75,10 +75,25 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):
 
         return super().form_valid(form)
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class ProductListView(ListView):
+    def get_form_class(self):
+        if self.test_func():
+            return ProductFormManagers
+        else:
+            return ProductForm
+
+
+class ProductListView(PermissionRequiredMixin, ListView):
     model = Product
     form_class = ProductForm
+    permission_required = ['catalog.change_product',
+                           'catalog_view_product',
+                           'catalog.set_status_of_product',
+                           'catalog.set_description',
+                           'catalog.set_category_product'
+                           ]
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -93,20 +108,15 @@ class ProductListView(ListView):
 
         return context_data
 
-    def get_queryset(self, *args, **kwargs):
-        return super().get_queryset().filter(
-            id=self.kwargs.get('pk'),
-            creator_id=self.request.user
-        )
-
 
 class ProductDetailView(PermissionRequiredMixin, DetailView):
     model = Product
     permission_required = 'catalog.view_product'
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(PermissionRequiredMixin, DeleteView):
     model = Product
+    permission_required = 'catalog.delete_product'
     success_url = reverse_lazy('catalog:list_product')
 
 

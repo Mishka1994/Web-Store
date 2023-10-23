@@ -40,8 +40,17 @@ class Product(models.Model):
         permissions = [
             (
                 'set_status_of_product',
-                'Can status product'
+                'Can status_of_product'
+            ),
+            (
+                'set_description',
+                'Can description'
+            ),
+            (
+                'set_category_product',
+                'Can category_product'
             )
+
         ]
 
 
