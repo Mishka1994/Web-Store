@@ -48,7 +48,7 @@ class ProductCreateView(PermissionRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
+class ProductUpdateView(PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     permission_required = 'catalog.change_product'
@@ -79,7 +79,7 @@ class ProductUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView
         return self.request.user.is_staff
 
     def get_form_class(self):
-        if self.test_func():
+        if self.test_func() and self.object.creator != self.request.user:
             return ProductFormManagers
         else:
             return ProductForm
@@ -88,12 +88,7 @@ class ProductUpdateView(PermissionRequiredMixin, UserPassesTestMixin, UpdateView
 class ProductListView(PermissionRequiredMixin, ListView):
     model = Product
     form_class = ProductForm
-    permission_required = ['catalog.change_product',
-                           'catalog_view_product',
-                           'catalog.set_status_of_product',
-                           'catalog.set_description',
-                           'catalog.set_category_product'
-                           ]
+    permission_required = 'catalog.change_product'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context_data = super().get_context_data(**kwargs)

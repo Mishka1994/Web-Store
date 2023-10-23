@@ -6,6 +6,7 @@
     <h1 class="display-4">{{ title }}</h1>
     <div class="row">
         {% for item in object_list %}
+
         <div class="col-4">
             <div class="card" style="width: 18rem;">
                 <img src="{{ item.image|product_media }}" class="card-img-top">
@@ -25,9 +26,9 @@
                 </div>
                 <div class="card-footer">
                     <a href="{% url 'catalog:view_product' item.pk %}" class="btn btn-primary">Смотреть товар</a>
-                        {% if perms.catalog.change_product %}
-                            <a href="{% url 'catalog:update_product' item.pk %}" class="btn btn-success">Изменить товар</a>
-                        {% endif %}
+                    {% if perms.catalog.change_product or user == item.creator %}
+                    <a href="{% url 'catalog:update_product' item.pk %}" class="btn btn-success">Изменить товар</a>
+                    {% endif %}
                     {% if perms.catalog.delete_product %}
                     <a href="{% url 'catalog:delete_product' item.pk %}" class="btn btn-danger">Удалить товар</a>
                     {% endif %}
