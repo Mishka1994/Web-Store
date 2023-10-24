@@ -75,20 +75,52 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):
 
         return super().form_valid(form)
 
+#    def test_func(self):
+#        return self.request.user.is_staff
+
+#    def get_form_class(self):
+#        if self.object.creator == self.request.user:
+#            return ProductForm
+#        elif self.test_func():
+#            return ProductFormManagers
+#        else:
+#            return ProductForm
+
+
+class ProductManagersUpdate(UserPassesTestMixin, UpdateView):
+    model = Product
+    form_class = ProductFormManagers
+    success_url = reverse_lazy('catalog:list_product')
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        SubjectFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+
+        if self.request.method == 'POST':
+            context_data['formset'] = SubjectFormset(self.request.POST, instance=self.object)
+        else:
+            context_data['formset'] = SubjectFormset(instance=self.object)
+
+        return context_data
+
+    def form_valid(self, form):
+        formset = self.get_context_data()['formset']
+        self.object = form.save()
+        if formset.is_valid:
+            formset.instance = self.object
+            formset.save()
+
+        return super().form_valid(form)
+
+
     def test_func(self):
         return self.request.user.is_staff
-
-    def get_form_class(self):
-        if self.test_func() and self.object.creator != self.request.user:
-            return ProductFormManagers
-        else:
-            return ProductForm
 
 
 class ProductListView(PermissionRequiredMixin, ListView):
     model = Product
     form_class = ProductForm
-    permission_required = 'catalog.change_product'
+    permission_required = 'catalog.view_product'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context_data = super().get_context_data(**kwargs)

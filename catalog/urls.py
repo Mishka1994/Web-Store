@@ -4,7 +4,7 @@ from catalog.apps import CatalogConfig
 from catalog.views import BlogPostCreateView, BlogPostDetailView, BlogPostListView, \
     BlogPostUpdateView, BlogPostDeleteView, ProductDetailView, ProductListView, ContactsTemplateView, IndexTemplateView, \
     ProductCreateView, ProductDeleteView, ProductUpdateView, CategoryCreateView, VersionCreateView, VersionListView, \
-    VersionDetailView, VersionUpdateView
+    VersionDetailView, VersionUpdateView, ProductManagersUpdate
 
 app_name = CatalogConfig.name
 
@@ -15,6 +15,7 @@ urlpatterns = [
     path('list_product/', ProductListView.as_view(), name='list_product'),
     path('view_product/<int:pk>/', ProductDetailView.as_view(), name='view_product'),
     path('edit_product/<int:pk>/', ProductUpdateView.as_view(), name='update_product'),
+    path('edit_product/<int:pk>', ProductManagersUpdate.as_view(), name='managers_update_product'),
     path('delete_product/<int:pk>/', ProductDeleteView.as_view(), name='delete_product'),
     path('contacts/', ContactsTemplateView.as_view(), name='contacts'),
     path('create/', BlogPostCreateView.as_view(), name='create_blogpost'),
