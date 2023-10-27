@@ -7,6 +7,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 
 from catalog.forms import ProductForm, CategoryForm, VersionForm, BlogPostForm, ProductFormManagers
 from catalog.models import Product, BlogPost, Category, Version
+from catalog.services import get_cashed_list_category
 
 
 def base(request):
@@ -33,6 +34,17 @@ class CategoryCreateView(CreateView):
     model = Category
     form_class = CategoryForm
     success_url = reverse_lazy('catalog:list_product')
+
+
+class CategoryListView(PermissionRequiredMixin, ListView):
+    model = Category
+    form_class = CategoryForm
+    permission_required = 'catalog:view_category'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['category'] = get_cashed_list_category()
+        return context_data
 
 
 class ProductCreateView(PermissionRequiredMixin, CreateView):
@@ -75,21 +87,12 @@ class ProductUpdateView(PermissionRequiredMixin, UpdateView):
 
         return super().form_valid(form)
 
-#    def test_func(self):
-#        return self.request.user.is_staff
 
-#    def get_form_class(self):
-#        if self.object.creator == self.request.user:
-#            return ProductForm
-#        elif self.test_func():
-#            return ProductFormManagers
-#        else:
-#            return ProductForm
-
-
-class ProductManagersUpdate(UserPassesTestMixin, UpdateView):
+class ProductManagersUpdate(PermissionRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductFormManagers
+    permission_required = 'catalog.change_product'
+
     success_url = reverse_lazy('catalog:list_product')
 
     def get_context_data(self, **kwargs):
@@ -111,7 +114,6 @@ class ProductManagersUpdate(UserPassesTestMixin, UpdateView):
             formset.save()
 
         return super().form_valid(form)
-
 
     def test_func(self):
         return self.request.user.is_staff
@@ -138,7 +140,7 @@ class ProductListView(PermissionRequiredMixin, ListView):
 
 class ProductDetailView(PermissionRequiredMixin, DetailView):
     model = Product
-    permission_required = 'catalog.view_product'
+    permission_required = 'catalog.change_product'
 
 
 class ProductDeleteView(PermissionRequiredMixin, DeleteView):
