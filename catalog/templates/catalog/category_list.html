@@ -1,0 +1,29 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+
+<div class="col-12">
+    <div class="row">
+        {% for item in category %}
+        <div class="col-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-header">
+                        {{ item.name }}
+                        <div class="card-body">
+                            <div class="card-text">
+                                {{ item.description }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+
